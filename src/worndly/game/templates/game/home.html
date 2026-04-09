@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome{{ user.username|default:""|yesno:", " }}{{ user.username }}</h1>
+        <h1>Welcome {{ user.username|default:""|yesno:", " }}{{ user.username }}</h1>
         <p>You are now logged in.</p>
     </div>
 </body>
