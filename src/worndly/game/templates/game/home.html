@@ -8,9 +8,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome {{ user.username|default:""|yesno:", " }}{{ user.username }}</h1>
-        <p>You are now logged in.</p>
-        <a href="{% url 'game:login' %}">Logout</a>
+        <h1>Welcome{% if user.is_authenticated %}, {{ user.username }}{% endif %}</h1>        <p>You are now logged in.</p>
+        <a href="{% url 'game:logout' %}">Logout</a>
     </div>
 </body>
 </html>
