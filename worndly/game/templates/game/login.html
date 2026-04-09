@@ -6,10 +6,38 @@
     </head>
     <body>
         <h1>Login</h1>
-        <!-- <form method="post">
+        <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <p>
+                <label>Username:</label>
+                <input type="text" name="username">
+            </p>
+            <p>
+                <label>Password:</label>
+                <input type="password" name="password">
+            </p>
             <button type="submit">Login</button>
-        </form> -->
+        </form>
+        <h1>Sign Up</h1>
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label>Name (Optional):</label>
+                <input type="text" name="name">
+            </p>
+            <p>
+                <label>Username:</label>
+                <input type="text" name="username">
+            </p>
+            <p>
+                <label>Email:</label>
+                <input type="text" name="email">
+            </p>
+            <p>
+                <label>Password:</label>
+                <input type="password" name="password">
+            </p>
+            <button type="submit">Sign Up</button>
+        </form>
     </body>
 </html>
