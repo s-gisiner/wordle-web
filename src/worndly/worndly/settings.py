@@ -118,3 +118,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'game.User'
+
+LOGIN_URL = 'game:login'
