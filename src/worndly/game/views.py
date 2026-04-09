@@ -12,7 +12,7 @@ def login(request):
         
     return render(request, 'game/login.html')
 
-def register(request):
+def signup(request):
     if request.method == 'POST':
         name = request.POST['name']
         username = request.POST['username']
