@@ -9,6 +9,8 @@
 <body>
     <div class="container">
         <h1>Welcome{% if user.is_authenticated %}, {{ user.username }}{% endif %}</h1>        <p>You are now logged in.</p>
+        <a href="{% url 'game:play' %}">Play Game</a>
+        <a href="{% url 'game:profile' %}">Profile</a>
         <a href="{% url 'game:logout' %}">Logout</a>
     </div>
 </body>

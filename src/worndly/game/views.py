@@ -45,3 +45,11 @@ def home(request):
 def logout_view(request):
     auth_logout(request)
     return redirect('game:login')
+
+@login_required
+def play(request):
+    return render(request, 'game/play.html')
+
+@login_required
+def profile(request):
+    return render(request, 'game/profile.html')
