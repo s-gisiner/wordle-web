@@ -36,17 +36,23 @@ def view_balance_for_user(access_token, email):
        print("Failed to access the API endpoint to view balance for user:", api_response.status_code)
 
 def user_pay(access_token, email, amount):
-   # Use the access token to make an authenticated request
    headers = {
        'Authorization': f'Bearer {access_token}'
    }
-   data = {"amount": amount} # non-negative integer value to be decreased
-   # Make a POST request with the authorization header and data payload
-   api_response = requests.post(f"{settings.KRATOS_API_BASE}/player/{email}/pay", headers=headers, data=data)
 
+   data = {"amount": amount}
+
+   api_response = requests.post(
+       f"{settings.KRATOS_API_BASE}/player/{email}/pay",
+       headers=headers,
+       data=data
+   )
+
+   print("PAY URL:", f"{settings.KRATOS_API_BASE}/player/{email}/pay")
+   print("PAY STATUS:", api_response.status_code)
+   print("PAY RESPONSE:", api_response.text)
 
    if api_response.status_code == 200:
-       # Process the data from the API
        return api_response.json()
    else:
-       print("Failed to access the API endpoint to pay:", api_response.status_code)
+       return None

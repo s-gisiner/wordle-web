@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buy Games</title>
+</head>
+<body>
+
+    <h1>Buy Extra Games</h1>
+
+    <p><strong>Your Krato$Coin Balance:</strong> {{ balance }}</p>
+    <p><strong>Your Extra Plays:</strong> {{ extra_plays }}</p>
+
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="amount">Number of games to buy:</label>
+        <input type="number" id="amount" name="amount" min="1" required>
+
+        <button type="submit">Buy</button>
+    </form>
+
+    <br>
+
+    {% if message %}
+        <p style="color: green;"><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    {% if error %}
+        <p style="color: red;"><strong>{{ error }}</strong></p>
+    {% endif %}
+
+</body>
+</html>

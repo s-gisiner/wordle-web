@@ -1,0 +1,14 @@
+# Django-specific
+db.sqlite3
+db.sqlite3-journal
+__pycache__/
+*.pyc
+
+# Environments
+venv/
+env/
+.env
+
+# IDEs
+.vscode/
+.idea/

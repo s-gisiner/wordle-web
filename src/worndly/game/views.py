@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
-from .kratos_api import view_balance_for_user
+from .kratos_api import view_balance_for_user, user_pay
 from .models import User
 from .models import User, Play
 from django.conf import settings
@@ -89,14 +89,50 @@ def profile(request):
 @login_required
 def buy_games(request):
     user = request.user
-    balance_response = view_balance_for_user(settings.KRATOS_ACCESS_TOKEN, user.email)
+    message = None
+    error = None
 
-    if balance_response:
-        balance = balance_response.get('amount', 0)
+    balance_data = view_balance_for_user(settings.KRATOS_ACCESS_TOKEN, user.email)
+
+    if balance_data:
+        balance = balance_data.get("amount", 0)
     else:
         balance = None
 
-    return render(request, 'game/buy_games.html', {"balance": balance, "extra_plays": user.extra_plays})
+    if request.method == "POST":
+        amount = request.POST.get("amount")
+
+        try:
+            amount = int(amount)
+        except ValueError:
+            amount = 0
+
+        if amount <= 0:
+            error = "Please enter a positive number of games."
+        else:
+            payment_data = user_pay(
+                settings.KRATOS_ACCESS_TOKEN,
+                user.email,
+                amount
+            )
+
+            print("Payment data:", payment_data)
+
+            if payment_data:
+                user.extra_plays += amount
+                user.save()
+
+                balance = payment_data.get("new_amount", balance)
+                message = f"You successfully purchased {amount} extra game(s)."
+            else:
+                error = "Transaction failed. You may have insufficient funds."
+
+    return render(request, "game/buy_games.html", {
+        "balance": balance,
+        "extra_plays": user.extra_plays,
+        "message": message,
+        "error": error,
+    })
     
 
 def save_game_result(request):
