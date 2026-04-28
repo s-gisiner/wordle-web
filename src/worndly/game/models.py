@@ -6,6 +6,7 @@ from django.conf import settings
 class User(AbstractUser):
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
+    extra_plays = models.IntegerField(default=0)
 
     def __str__(self):
         return self.username
