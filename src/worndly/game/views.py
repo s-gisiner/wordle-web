@@ -1,3 +1,6 @@
+from time import timezone
+from datetime import timedelta
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -57,8 +60,25 @@ def play(request):
 
 @login_required
 def profile(request):
-    latest_plays = Play.objects.order_by('-date_played')
-    latest_plays = latest_plays.filter(user=request.user)
+    plays = Play.objects.order_by('-date_played')
+    plays = plays.filter(user=request.user)
+    try:
+        filter_type = request.GET.get('filter')
+    except:
+        filter_type = "all"
+    now = timezone.now()
+
+    if filter_type == 'week':
+        start_date = now - timedelta(days=7)
+        plays = plays.filter(date_played__gte=start_date)
+        
+    elif filter_type == 'month':
+        start_date = now - timedelta(days=30)
+        plays = plays.filter(date_played__gte=start_date)
+        
+    elif filter_type == 'year':
+        start_date = now - timedelta(days=365)
+        plays = plays.filter(date_played__gte=start_date)
 
     context = {
         'plays': latest_plays,
