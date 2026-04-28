@@ -120,3 +120,8 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'game.User'
 
 LOGIN_URL = 'game:login'
+
+# API Settings
+KRATOS_GROUP = "group3"
+KRATOS_API_BASE = "https://jcssantos.pythonanywhere.com/api/group3/group3"
+KRATOS_ACCESS_TOKEN = "your_access_token_here"
