@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+
+from .kratos_api import view_balance_for_user
 from .models import User
 
 # Create your views here.
@@ -53,3 +55,17 @@ def play(request):
 @login_required
 def profile(request):
     return render(request, 'game/profile.html')
+
+@login_required
+def buy_games(request):
+    profile = request.user.profile
+    balance_response = view_balance_for_user(request.user.access_token, request.user.email)
+
+    if balance_response.status_code == 200:
+        profile.balance = balance_response.get('balance', 0)
+        profile.save()
+    else:
+        profile.balance = None
+        profile.save()
+
+    return render(request, 'game/buy_games.html', {"balance": profile.balance, "extra_plays": profile.extra_plays})
