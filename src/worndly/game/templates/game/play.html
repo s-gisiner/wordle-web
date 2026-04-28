@@ -21,6 +21,9 @@
 
         <div id="game-board"></div>
 
+        <input type="text" id="guess-input" maxlength="5" placeholder="Type 5 letters..." hidden="true">
+        <button id = "submit-guess" onclick="handleSubmission()" hidden="true">Submit Guess</button>
+
         <a href="{% url 'game:home' %}">Home</a>
     </div>
     <script src="{% static 'game/play.js' %}"></script>
