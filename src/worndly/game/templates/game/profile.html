@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="plays" content="{{ plays }}">
     <title>Profile</title>
 </head>
 <body>
@@ -12,6 +13,13 @@
         {% if plays %}
 
             <h2>Plays</h2>
+
+            <div id="time-select">
+                <a href="?filter=week">Last Week</a>
+                <a href="?filter=month">Last Month</a>
+                <a href="?filter=year">Last Year</a>
+                <a href="?filter=all">All Time</a>
+            </div>
 
             <ul>
                 {% for play in plays %}
@@ -27,5 +35,24 @@
 
         <a href="{% url 'game:home' %}">Home</a>
     </div>
+    <script>
+        plays = document.querySelector('[name=plays]').content;
+        function filterPlays(timeframe) {
+            if(timeframe === 'Last Week') {
+                plays = plays.filter(play => {
+                    const playDate = new Date(play.date_played);
+                    const now = new Date();
+                    const oneWeekAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+                    return playDate >= oneWeekAgo && playDate <= now;
+                });
+            } else if (timeframe === 'Last Month') {
+                // Filter plays from the last 30 days
+            } else if (timeframe === 'Last Year') {
+                // Filter plays from the last 365 days
+            } else {
+                // Show all plays
+            }
+        }
+    </script>
 </body>
 </html>
