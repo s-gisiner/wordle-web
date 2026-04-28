@@ -82,6 +82,13 @@ def profile(request):
 
     context = {
         'plays': plays,
+        'win_percentage': plays.filter(is_win=True).count() / plays.count() * 100 if plays.count() > 0 else 0,
+        'one_attempts': plays.filter(attempts=1).count(),
+        'two_attempts': plays.filter(attempts=2).count(),
+        'three_attempts': plays.filter(attempts=3).count(),
+        'four_attempts': plays.filter(attempts=4).count(),
+        'five_attempts': plays.filter(attempts=5).count(),
+        'six_attempts': plays.filter(attempts=6).count(),
     }
     return render(request, 'game/profile.html', context)
 

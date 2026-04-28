@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 # Create your models here.
 class User(AbstractUser):
@@ -23,4 +24,4 @@ class Play(models.Model):
     is_win = models.BooleanField(default=False)
     attempts = models.IntegerField()
 
-    date_played = models.DateTimeField(auto_now_add=True)
+    date_played = models.DateTimeField(default=timezone.now)
