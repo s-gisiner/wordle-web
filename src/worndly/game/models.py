@@ -7,6 +7,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
     extra_plays = models.IntegerField(default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return self.username
