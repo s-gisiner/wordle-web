@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="plays" content="{{ plays }}">
+    <meta name="one_attempts" content="{{ one_attempts }}">
+    <meta name="two_attempts" content="{{ two_attempts }}">
+    <meta name="three_attempts" content="{{ three_attempts }}">
+    <meta name="four_attempts" content="{{ four_attempts }}">
+    <meta name="five_attempts" content="{{ five_attempts }}">
+    <meta name="six_attempts" content="{{ six_attempts }}">
     <title>Profile</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -31,28 +38,73 @@
                 {% endfor %}
             </ul>
 
+            <h2>Stats</h2>
+
+            <p>Total Plays: {{ plays|length }}</p>
+            <p>Win %: {{ win_percentage }}%</p>
+
+            <div style="width:400px;">
+                <canvas id="distributionChart"></canvas>
+            </div>
+
         {% endif %}
 
         <a href="{% url 'game:home' %}">Home</a>
     </div>
+
+    <!-- used the linked website in the instructions to create the chart -->
     <script>
-        plays = document.querySelector('[name=plays]').content;
-        function filterPlays(timeframe) {
-            if(timeframe === 'Last Week') {
-                plays = plays.filter(play => {
-                    const playDate = new Date(play.date_played);
-                    const now = new Date();
-                    const oneWeekAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-                    return playDate >= oneWeekAgo && playDate <= now;
-                });
-            } else if (timeframe === 'Last Month') {
-                // Filter plays from the last 30 days
-            } else if (timeframe === 'Last Year') {
-                // Filter plays from the last 365 days
-            } else {
-                // Show all plays
+        let ctx = document.getElementById('distributionChart').getContext('2d');
+        const one_attempts = document.querySelector('meta[name="one_attempts"]').getAttribute('content');
+        const two_attempts = document.querySelector('meta[name="two_attempts"]').getAttribute('content');
+        const three_attempts = document.querySelector('meta[name="three_attempts"]').getAttribute('content');
+        const four_attempts = document.querySelector('meta[name="four_attempts"]').getAttribute('content');
+        const five_attempts = document.querySelector('meta[name="five_attempts"]').getAttribute('content');
+        const six_attempts = document.querySelector('meta[name="six_attempts"]').getAttribute('content');
+        let distributionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6'], // X-axis labels
+                datasets: [{
+                    label: 'Number of Attempts Distribution',
+                    data: [one_attempts, two_attempts, three_attempts, four_attempts, five_attempts, six_attempts], // sample distribution data
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true, // If you set to false, this will hide the title
+                        text: 'Number of Attempts Distribution' // specify the chart title
+                    },
+                    legend: {
+                        display: false // This will hide the legend
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true // Y-axis starts at 0
+                    }
+                }
             }
-        }
+        });
     </script>
+    
 </body>
 </html>
