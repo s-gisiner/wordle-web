@@ -13,6 +13,18 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+    def can_play(self):
+        today = timezone.now().date()
+        plays_today = self.plays.filter(date_played__date=today).count()
+        
+        if plays_today < 3:
+            return True
+        
+        if self.extra_plays > 0:
+            return True
+            
+        return False
+    
 class Play(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 

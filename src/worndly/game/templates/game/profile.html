@@ -49,9 +49,14 @@
 
         {% endif %}
 
+        {% if not plays %}
+            <p>No Stats Yet</p>
+        {% endif %}
+
         <a href="{% url 'game:home' %}">Home</a>
     </div>
 
+    {% if plays %}
     <!-- used the linked website in the instructions to create the chart -->
     <script>
         let ctx = document.getElementById('distributionChart').getContext('2d');
@@ -105,6 +110,7 @@
             }
         });
     </script>
-    
+    {% endif %}
+
 </body>
 </html>

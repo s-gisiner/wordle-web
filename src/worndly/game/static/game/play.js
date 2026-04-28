@@ -1,6 +1,12 @@
 const csrftoken = document.querySelector('[name=csrf-token]').content;
 
 async function startGame(filename) {
+    const canPlay = document.querySelector('[name=can-play]').content;
+    if (canPlay === "false") {
+        alert("You don't have any games left! Please buy more to continue playing.");
+        return;
+    }
+
     const response = await fetch(`/static/game/words/${filename}`);
     const text = await response.text();
     
@@ -15,6 +21,9 @@ async function startGame(filename) {
 
 function resetBoard() {
     attempts = 0;
+
+    buttons = document.querySelectorAll(".lang");
+    buttons.forEach(button => button.disabled = true);
 
     const board = document.getElementById("game-board");
     board.innerHTML = "";
@@ -127,11 +136,15 @@ function handleSubmission(){
         alert(`Congratulations! You've guessed the word in ${attempts + 1} attempts!`);
         document.getElementById("guess-input").hidden = true;
         document.getElementById("submit-guess").hidden = true;
+        buttons = document.querySelectorAll(".lang");
+        buttons.forEach(button => button.disabled = false);
         reportGameResult(true);
     } else if (attempts === 5) {
         alert(`Game Over! The word was: ${targetWord}`);
         document.getElementById("guess-input").hidden = true;
         document.getElementById("submit-guess").hidden = true;
+        buttons = document.querySelectorAll(".lang");
+        buttons.forEach(button => button.disabled = false);
         reportGameResult(false);
     }
 

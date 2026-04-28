@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="can-play" content="{{ user.can_play|yesno:'true,false' }}">
     <title>Play Game</title>
     <link rel="stylesheet" href="{% static 'game/play.css' %}">
 </head>
@@ -13,11 +14,11 @@
         <h1>Play Game</h1>
         <p>Welcome to the game!</p>
         <div id="lang-select">
-            <button onclick="startGame('de.txt')">🇩🇪 German</button>
-            <button onclick="startGame('es.txt')">🇪🇸 Spanish</button>
-            <button onclick="startGame('fr.txt')">🇫🇷 French</button>
-            <button onclick="startGame('pt.txt')">🇧🇷 Portuguese</button>
-            <button onclick="startGame('en.txt')">🇺🇸 English</button>
+            <button onclick="startGame('de.txt')" class="lang">🇩🇪 German</button>
+            <button onclick="startGame('es.txt')" class="lang">🇪🇸 Spanish</button>
+            <button onclick="startGame('fr.txt')" class="lang">🇫🇷 French</button>
+            <button onclick="startGame('pt.txt')" class="lang">🇧🇷 Portuguese</button>
+            <button onclick="startGame('en.txt')" class="lang">🇺🇸 English</button>
         </div>
 
         <div id="game-board"></div>
