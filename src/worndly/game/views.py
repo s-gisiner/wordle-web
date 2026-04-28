@@ -3,14 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-<<<<<<< HEAD
 
 from .kratos_api import view_balance_for_user
 from .models import User
-=======
 from .models import User, Play
 import json
->>>>>>> 695f8bab8642dc265d89c3fc1a713220ddb85396
 
 # Create your views here.
 def login(request):
