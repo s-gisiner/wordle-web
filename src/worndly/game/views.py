@@ -87,17 +87,17 @@ def profile(request):
 
 @login_required
 def buy_games(request):
-    profile = request.user.profile
+    user = request.user
     balance_response = view_balance_for_user(request.user.access_token, request.user.email)
 
     if balance_response.status_code == 200:
-        profile.balance = balance_response.get('balance', 0)
-        profile.save()
+        user.balance = balance_response.get('balance', 0)
+        user.save()
     else:
-        profile.balance = None
-        profile.save()
+        user.balance = None
+        user.save()
 
-    return render(request, 'game/buy_games.html', {"balance": profile.balance, "extra_plays": profile.extra_plays})
+    return render(request, 'game/buy_games.html', {"balance": user.balance, "extra_plays": user.extra_plays})
     
 
 def save_game_result(request):
