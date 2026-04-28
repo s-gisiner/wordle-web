@@ -1,4 +1,4 @@
-from time import timezone
+from django.utils import timezone
 from datetime import timedelta
 
 from django.http import JsonResponse
@@ -66,22 +66,22 @@ def profile(request):
         filter_type = request.GET.get('filter')
     except:
         filter_type = "all"
-    now = timezone.now()
+    curr_time = timezone.now()
 
     if filter_type == 'week':
-        start_date = now - timedelta(days=7)
+        start_date = curr_time - timedelta(days=7)
         plays = plays.filter(date_played__gte=start_date)
         
     elif filter_type == 'month':
-        start_date = now - timedelta(days=30)
+        start_date = curr_time - timedelta(days=30)
         plays = plays.filter(date_played__gte=start_date)
         
     elif filter_type == 'year':
-        start_date = now - timedelta(days=365)
+        start_date = curr_time - timedelta(days=365)
         plays = plays.filter(date_played__gte=start_date)
 
     context = {
-        'plays': latest_plays,
+        'plays': plays,
     }
     return render(request, 'game/profile.html', context)
 
