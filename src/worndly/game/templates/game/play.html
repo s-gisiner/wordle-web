@@ -1,15 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play Game</title>
+    <link rel="stylesheet" href="{% static 'game/play.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Play Game</h1>
         <p>Welcome to the game!</p>
+        <div id="lang-select">
+            <button onclick="startGame('de.txt')">🇩🇪 German</button>
+            <button onclick="startGame('es.txt')">🇪🇸 Spanish</button>
+            <button onclick="startGame('fr.txt')">🇫🇷 French</button>
+            <button onclick="startGame('pt.txt')">🇧🇷 Portuguese</button>
+            <button onclick="startGame('en.txt')">🇺🇸 English</button>
+        </div>
+
+        <div id="game-board"></div>
+
         <a href="{% url 'game:home' %}">Home</a>
     </div>
+    <script src="{% static 'game/play.js' %}"></script>
 </body>
 </html>
