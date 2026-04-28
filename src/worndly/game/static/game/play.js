@@ -102,7 +102,7 @@ function handleSubmission(){
     });
 
     if(word === targetWord) {
-        alert("Congratulations! You've guessed the word!");
+        alert(`Congratulations! You've guessed the word in ${attempts + 1} attempts!`);
         document.getElementById("guess-input").hidden = true;
         document.getElementById("submit-guess").hidden = true;
     } else if (attempts === 5) {
