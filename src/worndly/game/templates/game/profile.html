@@ -8,6 +8,23 @@
 <body>
     <div class="container">
         <h1>Profile</h1>
+
+        {% if plays %}
+
+            <h2>Plays</h2>
+
+            <ul>
+                {% for play in plays %}
+                    <li> 
+                        {{ play.word_guessed }} - {{ play.is_win|yesno:"Win,Loss" }}
+                        {% if play.is_win %} (in {{ play.attempts }} attempts) {% endif %}
+                        on {{ play.date_played|date:"Y-m-d H:i" }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% endif %}
+
         <a href="{% url 'game:home' %}">Home</a>
     </div>
 </body>

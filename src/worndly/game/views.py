@@ -1,10 +1,16 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+<<<<<<< HEAD
 
 from .kratos_api import view_balance_for_user
 from .models import User
+=======
+from .models import User, Play
+import json
+>>>>>>> 695f8bab8642dc265d89c3fc1a713220ddb85396
 
 # Create your views here.
 def login(request):
@@ -54,7 +60,13 @@ def play(request):
 
 @login_required
 def profile(request):
-    return render(request, 'game/profile.html')
+    latest_plays = Play.objects.order_by('-date_played')
+    latest_plays = latest_plays.filter(user=request.user)
+
+    context = {
+        'plays': latest_plays,
+    }
+    return render(request, 'game/profile.html', context)
 
 @login_required
 def buy_games(request):
@@ -69,3 +81,22 @@ def buy_games(request):
         profile.save()
 
     return render(request, 'game/buy_games.html', {"balance": profile.balance, "extra_plays": profile.extra_plays})
+    
+
+def save_game_result(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            
+            Play.objects.create(
+                user=request.user,
+                word_guessed=data.get('word'),
+                is_win=data.get('is_win'),
+                attempts=data.get('attempts'),
+            )
+            
+            return JsonResponse({'status': 'success'}, status=201)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    return JsonResponse({'status': 'invalid method'}, status=405)

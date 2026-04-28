@@ -1,3 +1,5 @@
+const csrftoken = document.querySelector('[name=csrf-token]').content;
+
 async function startGame(filename) {
     const response = await fetch(`/static/game/words/${filename}`);
     const text = await response.text();
@@ -38,6 +40,26 @@ function resetBoard() {
 
     const submitButton = document.getElementById("submit-guess");
     submitButton.hidden = false;
+}
+
+function reportGameResult(isWin) {
+    const gameData = {
+        word: targetWord,
+        is_win: isWin,
+        attempts: attempts + 1,
+    };
+
+    fetch('/game/save-result/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(gameData)
+    })
+    .then(response => response.json())
+    .then(data => console.log('Game saved to DB:', data))
+    .catch(error => console.error('Error saving game:', error));
 }
 
 function handleSubmission(){
@@ -105,10 +127,12 @@ function handleSubmission(){
         alert(`Congratulations! You've guessed the word in ${attempts + 1} attempts!`);
         document.getElementById("guess-input").hidden = true;
         document.getElementById("submit-guess").hidden = true;
+        reportGameResult(true);
     } else if (attempts === 5) {
         alert(`Game Over! The word was: ${targetWord}`);
         document.getElementById("guess-input").hidden = true;
         document.getElementById("submit-guess").hidden = true;
+        reportGameResult(false);
     }
 
     attempts++;
