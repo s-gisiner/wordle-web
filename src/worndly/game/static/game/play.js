@@ -5,7 +5,6 @@ async function startGame(filename) {
     words = text.split('\n').map(w => w.trim().toUpperCase()).filter(w => w.length === 5);
     
     targetWord = words[Math.floor(Math.random() * words.length)];
-    console.log("Original target word:", targetWord);
     targetWord = targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
     console.log("Target word:", targetWord);
     
