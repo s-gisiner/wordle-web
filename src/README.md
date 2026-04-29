@@ -1,3 +1,3 @@
 Download all of the files. Direct yourself to src folder, and then the worndly folder. From there, run python (or python3) manage.py runserver. This will start running the server and you can go to the link that the terminal shows. 
 
-From there, direct yourself to that link with the extension /game/login which will bring you to the login page. The link on that page will bring you to the sign up page. You can create an account and then log in to that account to be directed to the home page, and from there you can also log out.
+From there, you will be directed to that link with the extension /game/login which will bring you to the login page. The link on that page will bring you to the sign up page. You can create an account and then log in to that account to be directed to the home page. From this home page, you can log out, go to the play game page, or go to the profile page.
