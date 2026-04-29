@@ -112,7 +112,7 @@ def profile(request):
         'three_attempts': plays.filter(attempts=3).count(),
         'four_attempts': plays.filter(attempts=4).count(),
         'five_attempts': plays.filter(attempts=5).count(),
-        'six_attempts': plays.filter(attempts=6).count(),
+        'six_attempts': plays.filter(attempts=6).filter(is_win=True).count(),
     }
     return render(request, 'game/profile.html', context)
 
