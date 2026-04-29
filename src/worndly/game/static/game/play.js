@@ -1,21 +1,51 @@
 const csrftoken = document.querySelector('[name=csrf-token]').content;
+const startGameUrl = document.querySelector('[name=start-game-url]').content;
 
 async function startGame(filename) {
-    const canPlay = document.querySelector('[name=can-play]').content;
-    if (canPlay === "false") {
-        alert("You don't have any games left! Please buy more to continue playing.");
+    console.log("Language clicked:", filename);
+
+    const playResponse = await fetch(startGameUrl, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    });
+
+    console.log("Start game status:", playResponse.status);
+
+    const playText = await playResponse.text();
+    console.log("Start game raw response:", playText);
+
+    let playData;
+    try {
+        playData = JSON.parse(playText);
+    } catch (error) {
+        console.error("Response was not JSON:", error);
+        alert("Start game request failed. Check console.");
         return;
     }
 
+    if (!playResponse.ok) {
+        alert(playData.message);
+        window.location.href = '/game/buy-games/';
+        return;
+    }
+
+    console.log("Permission granted. Loading word file...");
+
     const response = await fetch(`/static/game/words/${filename}`);
     const text = await response.text();
-    
-    words = text.split('\n').map(w => w.trim().toUpperCase()).filter(w => w.length === 5);
-    
+
+    words = text
+        .split('\n')
+        .map(w => w.trim().toUpperCase())
+        .filter(w => w.length === 5);
+
     targetWord = words[Math.floor(Math.random() * words.length)];
     targetWord = targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
     console.log("Target word:", targetWord);
-    
+
     resetBoard();
 }
 

@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from .kratos_api import view_balance_for_user, user_pay
-from .models import User
 from .models import User, Play
 from django.conf import settings
 import json
@@ -57,7 +56,31 @@ def logout_view(request):
 
 @login_required
 def play(request):
-    return render(request, 'game/play.html')
+    if request.user.can_play():
+        return render(request, 'game/play.html')
+    else:
+        return redirect('game:buy_games')
+    
+@login_required
+def start_game(request):
+    if request.method == "POST":
+        today = timezone.now().date()
+        plays_today = request.user.plays.filter(date_played__date=today).count()
+
+        if plays_today < 3:
+            return JsonResponse({"status": "success"})
+
+        if request.user.extra_plays > 0:
+            request.user.extra_plays -= 1
+            request.user.save()
+            return JsonResponse({"status": "success"})
+
+        return JsonResponse({
+            "status": "error",
+            "message": "You do not have any game plays left."
+        }, status=403)
+
+    return JsonResponse({"status": "invalid method"}, status=405)
 
 @login_required
 def profile(request):
@@ -146,6 +169,7 @@ def save_game_result(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+
             
             Play.objects.create(
                 user=request.user,

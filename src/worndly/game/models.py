@@ -24,7 +24,21 @@ class User(AbstractUser):
             return True
             
         return False
-    
+
+    def use_extra_play_if_needed(self):
+        today = timezone.now().date()
+        plays_today = self.plays.filter(date_played__date=today).count()
+
+        if plays_today < 3:
+            return True
+
+        if self.extra_plays > 0:
+            self.extra_plays -= 1
+            self.save()
+            return True
+
+        return False
+
 class Play(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 

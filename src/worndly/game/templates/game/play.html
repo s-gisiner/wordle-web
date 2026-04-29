@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <meta name="can-play" content="{{ user.can_play|yesno:'true,false' }}">
+    <meta name="start-game-url" content="{% url 'game:start_game' %}">
     <title>Play Game</title>
     <link rel="stylesheet" href="{% static 'game/play.css' %}">
 </head>
