@@ -1,4 +1,4 @@
-# Worndly — a Wordle clone with a token economy
+# Worndly: a Wordle clone with a token economy
 
 A web-based Wordle game built with Django, created with Danny Gallagher for Programming Paradigms at the University of Notre Dame.
 
