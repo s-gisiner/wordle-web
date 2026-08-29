@@ -21,17 +21,17 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             return redirect('game:home')
-        else:
-            # Check if user exists with plain text password
-            try:
-                user = User.objects.get(username=username)
-                if user.password == password:
-                    user.password = make_password(password)
-                    user.save()
-                    auth_login(request, user)
-                    return redirect('game:home')
-            except User.DoesNotExist:
-                pass
+        # else:
+        #     # Check if user exists with plain text password
+        #     try:
+        #         user = User.objects.get(username=username)
+        #         if user.password == password:
+        #             user.password = make_password(password)
+        #             user.save()
+        #             auth_login(request, user)
+        #             return redirect('game:home')
+        #     except User.DoesNotExist:
+        #         pass
         
     return render(request, 'game/login.html')
 
@@ -146,7 +146,6 @@ def buy_games(request):
                 amount
             )
 
-            print("Payment data:", payment_data)
 
             if payment_data:
                 user.extra_plays += amount
@@ -164,7 +163,7 @@ def buy_games(request):
         "error": error,
     })
     
-
+@login_required
 def save_game_result(request):
     if request.method == 'POST':
         try:

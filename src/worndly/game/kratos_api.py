@@ -48,9 +48,6 @@ def user_pay(access_token, email, amount):
        data=data
    )
 
-#    print("PAY URL:", f"{settings.KRATOS_API_BASE}/player/{email}/pay")
-#    print("PAY STATUS:", api_response.status_code)
-#    print("PAY RESPONSE:", api_response.text)
 
    if api_response.status_code == 200:
        return api_response.json()
